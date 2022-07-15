@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body class="container jumbotron">
+	<a href="/acc">Go Back</a>
+
+	<h3>Search Users</h3>
+	<form action="/searchuser" method="post">
+		<input type="text" name="username" placeholder="username" required="">
+		<input type="submit" name="submit">
+	</form>
+
+	<a href="/searchuser">Search all users</a>
+	<a href="/profile">Top rated profiles</a>
+	<h2>Post Question</h2>
+	<form action="/feeds" method="post">
+		<textarea name="content" rows="5" cols="100" placeholder="Post Question" required=""></textarea> <br>
+		<button>Post</button>
+	</form>
+	<br><br>
+
+	<h2>Feeds</h2>
+	<ul>
+		<% all.forEach((qs)=>{ %>
+		<li>			
+				<h4><a href="/feeds/<%= qs._id %>"><%= qs.content%></a></h4>
+				<b>Asked by: </b> <a href="/acc/<%=qs.userId%>"><%=qs.userName%></a><br>
+				<b>likes: </b> <%=qs.likedBy.length%> Answers: <%=qs.answer.length%>			
+		</li>
+		<% }) %>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+	<title>Home Page</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body class="container">
+	<form action="/logout">
+		<button>Log Out <%= user.username %></button>
+	</form>
+	<form action="/feeds">
+		<button>Feeds</button>
+	</form>
+	<form action="/myacc">
+		<button>My Account</button>
+	</form>
+	<!-- =================================== Question =================================== -->
+	<h3><u>Question :</u></h3>
+	<h2><%= question.content %></h2>
+	<p>Asked by: <a href="/acc/<%= question.userId %>" ><%= question.userName %> </a></p>
+
+
+	<!-- Likes -->
+
+	<% var f=0; if(question.likes==null || question.likes==0){ %>
+			Liked By: 0
+		<form action="/feeds/qs/<%= question._id %>/like" method="post">  
+		<button>Like</button> </form>
+	<% f=1;} %> 
+
+	<% if(Found){ %>
+	<form action="/feeds/qs/<%= question._id %>/unlike" method="post">
+		<a href="/feeds/qs/<%= question._id %>/likedBy">LikedBy </a> : <%= question.likes %> 
+		<button>Liked</button> 		
+	</form>
+	<% }else { if(f==0){ %>
+	<form action="/feeds/qs/<%= question._id %>/like" method="post">
+		<a href="/feeds/qs/<%= question._id %>/likedBy">LikedBy </a> : <%= question.likes %> 
+		<button>Like</button> 		
+	</form>
+
+	<% }} %>
+
+
+
+	<!-- ================================== Answer =================================== -->
+	<br><hr>
+	<br>
+	<% if(!answered){ %>
+		<h3>Post your answer here: </h3>
+
+		<form action="/feeds/<%= question._id %>/<%= question.content %>" method="post">
+			<textarea name="content" rows="15" cols="100" placeholder="Post your answer here"></textarea> <br>
+			<button>Post</button>
+		</form>
+	<% }else{ %>
+		<h3>You have already posted an answer!</h3>
+	<% } %>
+	
+
+	<br><br>
+
+	<!-- List of answer -->
+	<hr>
+	<div class="text-center jumbotron">
+		<h3><u>Answers:</u></h3>
+		<% var i=1; %>
+		<% question.answer.forEach((ans)=>{ %>
+			<p><%= i %>) <%= ans.content %> <p> 
+			<p>  -By <a href="/acc/<%= ans.userId %>"><%= ans.userName %></a></p>
+
+			<!-- Likes -->
+			<% var g=0; if(ans.likes==null || ans.likes==0){ %>
+					Liked By: 0
+				<form action="/feeds/ans/<%= question._id %>/<%= ans._id %>/like/f" method="post">  
+				<button>Like</button> </form>
+			<% g=1;} %> 
+
+			<% if(Found1[i-1]){ %>
+			<form action="/feeds/ans/<%= question._id %>/<%= ans._id %>/unlike/f" method="post">
+				<a href="/feeds/ans/<%= question._id %>/<%= ans._id %>/likedBy/f">LikedBy </a> : <%= ans.likes %> 
+				<button>Liked</button> 		
+			</form>
+			<% }else { if(g==0){ %>
+			<form action="/feeds/ans/<%= question._id %>/<%= ans._id %>/like/f" method="post">
+				<a href="/feeds/ans/<%= question._id %>/<%= ans._id %>/likedBy/f">LikedBy </a> : <%= ans.likes %> 
+				<button>Like</button> 		
+			</form>
+
+			<% }} %>
+
+		<% ++i;}) %>	
+	</div>
+	
+</body>
+</html>
